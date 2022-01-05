@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const readMe = fs.readFileSync('dayTwo.txt').toString().split('\n');
+const readMe = fs.readFileSync('text_files/dayTwo.txt').toString().split('\n');
 
 let newArr = [];
 

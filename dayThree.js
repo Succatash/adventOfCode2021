@@ -14,6 +14,8 @@ const length = lines[0].length;
 
 // for (const line of lines) {
 // 	let bits = [...line];
+// 	console.log(bits);
+
 // 	bits.forEach((bit, index) => {
 // 		if (bit === '0') {
 // 			zero[index]++;
@@ -40,71 +42,74 @@ const length = lines[0].length;
 
 //part 2 answer
 
-let C02;
-let Oxygen;
+let C02 = [];
+let Oxygen = [];
 
 //we are doing the same thing, but the lines just change
 let oxygenArr = [...lines];
+let c02Arr = [...lines];
+
 //this is for Oxygen
-
 for (let i = 0; i < length; i++) {
-	const z = Array(length).fill(0);
-	const o = Array(length).fill(0);
-	for (const line of oxygenArr) {
-		let bits = [...line];
-		bits.forEach((bit, index) => {
-			if (bit === '0') {
-				z[index]++;
-			} else {
-				o[index]++;
-			}
-		});
-	}
-
+	let one = 0;
+	let zero = 0;
 	if (oxygenArr.length > 1) {
-		oxygenArr = oxygenArr.filter((el) => {
-			if (o[i] <= z[i] && el[i] === '0') {
-				return el;
-			} else if (o[i] >= z[i] && el[i] === '1') {
-				return el;
-			}
-		});
-
-		Oxygen = oxygenArr;
-	} else {
-		return (Oxygen = oxygenArr);
-	}
-}
-
-let C02arr = [...lines];
-
-for (let i = 0; i < length; i++) {
-	const d = Array(length).fill(0);
-	const g = Array(length).fill(0);
-
-	for (const line of C02arr) {
-		let bits = [...line];
-		bits.forEach((bit, index) => {
-			if (bit === '0') {
-				d[index]++;
+		for (let j = 0; j < oxygenArr.length; j++) {
+			if (oxygenArr[j][i] === '0') {
+				zero += 1;
 			} else {
-				g[index]++;
+				one += 1;
 			}
-		});
-	}
-
-	if (C02arr.length > 1) {
-		C02arr = C02arr.filter((el) => {
-			if (g[i] >= d[i] && el[i] === '0') {
+		}
+		console.log('Oxygen', { zero: zero, one: one });
+		oxygenArr = oxygenArr.filter((el) => {
+			if (one < zero && el[i] === '0') {
 				return el;
-			} else if (g[i] <= d[i] && el[i] === '1') {
+			} else if (one >= zero && el[i] === '1') {
 				return el;
 			}
+			// else if (one === zero && el[i] === '1') {
+			// 	Oxygen = el;
+			// 	return Oxygen;
+			// }
 		});
+		Oxygen = oxygenArr;
+		// if()
+		//now we want to add up the 0 and 1s
 	} else {
-		C02 = C02arr;
-		return C02[0];
+		Oxygen = oxygenArr;
+	}
+	console.log(Oxygen);
+}
+
+// this is for C02;
+
+for (let c = 0; c < length; c++) {
+	let one = 0;
+	let zero = 0;
+
+	if (c02Arr.length > 1) {
+		for (let z = 0; z < c02Arr.length; z++) {
+			if (c02Arr[z][c] === '0') {
+				zero += 1;
+			} else {
+				one += 1;
+			}
+		}
+		console.log('C02', { zero: zero, one: one });
+		c02Arr = c02Arr.filter((el) => {
+			if (zero <= one && el[c] === '0') {
+				return el;
+			} else if (one < zero && el[c] === '1') {
+				return el;
+			}
+		});
+		console.log(c02Arr);
+		C02 = c02Arr;
+	} else {
+		C02 = c02Arr;
 	}
 }
-console.log('object');
-console.log(C02[0], Oxygen[0]);
+
+console.log(Oxygen, C02);
+console.log(parseInt(C02[0], 2) * parseInt(Oxygen[0], 2));
